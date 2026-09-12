@@ -1,49 +1,40 @@
-name: Build Calculator APK
+name: Build Android APK
 
 on:
   workflow_dispatch:
   push:
-    branches:
-      - main
+    branches: [ "main" ]
 
 jobs:
   build:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v6
+      - name: Checkout
+        uses: actions/checkout@v4
 
-      - name: Extract Android project
+      - name: Extract project
         run: |
-          mkdir android-project
-          unzip -q DigitalCalculator-Android.zip -d android-project
-          echo "Extracted files:"
-          find android-project -maxdepth 3 -type f | head -100
+          unzip -q DigitalCalculator-PlayStore-Ready.zip
+          rm -rf app build.gradle settings.gradle gradle.properties .github
+          cp -r dcalc/. .
 
-      - name: Find Gradle project
-        run: |
-          PROJECT_DIR=$(find android-project -name settings.gradle -o -name settings.gradle.kts | head -1 | xargs dirname)
-          echo "PROJECT_DIR=$PROJECT_DIR" >> $GITHUB_ENV
-          echo "Project found at: $PROJECT_DIR"
-
-      - name: Setup Java
-        uses: actions/setup-java@v6
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
         with:
           distribution: temurin
           java-version: '17'
 
-      - name: Setup Gradle
-        uses: gradle/actions/setup-gradle@v6
+      - name: Set up Gradle 8.13
+        uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: '8.13'
 
-      - name: Build Debug APK
-        working-directory: ${{ env.PROJECT_DIR }}
-        run: |
-          chmod +x gradlew
-          ./gradlew assembleDebug
+      - name: Build APK
+        run: gradle :app:assembleDebug --stacktrace
 
       - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
-          name: DigitalCalculator-APK
-          path: ${{ env.PROJECT_DIR }}/app/build/outputs/apk/debug/*.apk
+          name: DigitalCalculator-debug-apk
+          path: app/build/outputs/apk/debug/app-debug.apk
