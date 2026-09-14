@@ -24,10 +24,12 @@ jobs:
           cp extracted/build.gradle .
           cp extracted/gradle.properties .
 
-      - name: Fix Gradle signing variable names
+      - name: Fix Gradle signing config
         run: |
-          sed -i 's/keyAlias keyAlias/keyAlias signingKeyAlias/' app/build.gradle
-          sed -i 's/keyPassword keyPassword/keyPassword signingKeyPassword/' app/build.gradle
+          sed -i 's/def keyAlias =/def releaseKeyAlias =/' app/build.gradle
+          sed -i 's/def keyPassword =/def releaseKeyPassword =/' app/build.gradle
+          sed -i 's/keyAlias keyAlias/keyAlias releaseKeyAlias/' app/build.gradle
+          sed -i 's/keyPassword keyPassword/keyPassword releaseKeyPassword/' app/build.gradle
 
       - name: Decode signing keystore
         run: |
