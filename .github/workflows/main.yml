@@ -24,6 +24,11 @@ jobs:
           cp extracted/build.gradle .
           cp extracted/gradle.properties .
 
+      - name: Fix Gradle signing variable names
+        run: |
+          sed -i 's/keyAlias keyAlias/keyAlias signingKeyAlias/' app/build.gradle
+          sed -i 's/keyPassword keyPassword/keyPassword signingKeyPassword/' app/build.gradle
+
       - name: Decode signing keystore
         run: |
           printf '%s' "${{ secrets.KEYSTORE_BASE64 }}" | base64 --decode > upload-key.jks
