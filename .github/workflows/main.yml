@@ -18,7 +18,7 @@ jobs:
           rm -rf app settings.gradle build.gradle gradle.properties
           rm -rf extracted
           mkdir extracted
-          unzip -q DigitalCalculator-PlayStore-Ready-SOURCE.zip -d extracted
+          unzip -q DigitalCalculator-PlayStore-Ready-FINAL-FIXED.zip -d extracted
           cp -r extracted/app .
           cp extracted/settings.gradle .
           cp extracted/build.gradle .
@@ -57,7 +57,7 @@ jobs:
           rm -rf app settings.gradle build.gradle gradle.properties
           rm -rf extracted
           mkdir extracted
-          unzip -q DigitalCalculator-PlayStore-Ready-SOURCE.zip -d extracted
+          unzip -q DigitalCalculator-PlayStore-Ready-FINAL-FIXED.zip -d extracted
           cp -r extracted/app .
           cp extracted/settings.gradle .
           cp extracted/build.gradle .
